@@ -45,19 +45,34 @@ def update_ticker_list():
     if new_ticker and new_ticker not in st.session_state.ticker_list:
         st.session_state.ticker_list.append(new_ticker)
 
+# Funkce pro odstranění tickeru ze seznamu
+def remove_ticker(ticker):
+    st.session_state.ticker_list.remove(ticker)
+
 #####################################
 #####################################
     
     
 #GUI
 #####################################
+# GUI
 st.title("Stocks Data")
-
-st.text_input("Modify tickers")
 
 # Zobrazení a aktualizace seznamu tickerů
 update_ticker_list()
 
-st.write("Current tickers:", st.session_state.ticker_list)
+# Vytvoření tlačítek pro odstranění tickerů
+for ticker in st.session_state.ticker_list:
+    col1, col2 = st.columns([0.8, 0.2])
+    with col1:
+        st.write(ticker)
+    with col2:
+        if st.button(f"Remove {ticker}", key=ticker):
+            remove_ticker(ticker)
+
+# Získání a zobrazení dat
+current_date = datetime.date.today()
+end_date = current_date - datetime.timedelta(days=1)
+
 for ticker in st.session_state.ticker_list:
     get_stock_data(ticker)
