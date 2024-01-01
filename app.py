@@ -66,8 +66,8 @@ end_date = current_date - datetime.timedelta(days=1)
 
 
 
-#
-#####################################
-for ticker in ticker_list:
-    stock_data = get_stock_data(ticker)
-#####################################
+# #
+# #####################################
+# for ticker in ticker_list:
+#     stock_data = get_stock_data(ticker)
+# #####################################
