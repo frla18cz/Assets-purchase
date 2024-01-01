@@ -1,6 +1,7 @@
 import streamlit as st
 import yfinance as yf
 import datetime
+import tickers
 
 
 # Inicializace session state pro udržení seznamu tickerů
@@ -36,43 +37,37 @@ def get_stock_data(ticker):
         print(ticker)
         print(f"Last close date: {last_close_date}\nLast close price: {round(last_close_price,2)}")
 
-for ticker in ticker_list:
-    stock_data = get_stock_data(ticker)
 
-# Aktualizace seznamu tickerů
-def update_ticker_list():
-    new_ticker = st.text_input("Add new ticker").upper()
-    if new_ticker and new_ticker not in st.session_state.ticker_list:
-        st.session_state.ticker_list.append(new_ticker)
 
-# Funkce pro odstranění tickeru ze seznamu
-def remove_ticker(ticker):
-    st.session_state.ticker_list.remove(ticker)
 
-#####################################
-#####################################
+
+
     
+
+
+
+
     
 #GUI
 #####################################
 # GUI
 st.title("Stocks Data")
 
-# Zobrazení a aktualizace seznamu tickerů
-update_ticker_list()
+tickers.tickers = st.text_input("Stocks Ticker List", value=tickers, height=200)
 
-# Vytvoření tlačítek pro odstranění tickerů
-for ticker in st.session_state.ticker_list:
-    col1, col2 = st.columns([0.8, 0.2])
-    with col1:
-        st.write(ticker)
-    with col2:
-        if st.button(f"Remove {ticker}", key=ticker):
-            remove_ticker(ticker)
+
+# Zobrazení a aktualizace seznamu tickerů
+
 
 # Získání a zobrazení dat
 current_date = datetime.date.today()
 end_date = current_date - datetime.timedelta(days=1)
 
-for ticker in st.session_state.ticker_list:
-    get_stock_data(ticker)
+
+
+
+#
+#####################################
+for ticker in ticker_list:
+    stock_data = get_stock_data(ticker)
+#####################################
