@@ -4,10 +4,6 @@ import datetime
 import tickers
 
 
-# Inicializace session state pro udržení seznamu tickerů
-if 'ticker_list' not in st.session_state:
-    st.session_state.ticker_list = ["AAPL", "MSFT", "GOOG", "AMZN"]
-
 testmode = True
 
 #####################################
@@ -23,28 +19,24 @@ if testmode == True:
 #####################################
     
 
-#####################################
-ticker_list = "AAPL", "MSFT", "GOOG", "AMZN"
-
-
 data = []
+
+# Funkce pro uložení změn do souboru
+def save_tickers_to_file(tickers):
+    with open('tickers.py', 'w') as file:
+        file.write(f"tickers = {tickers}\n")
 
 def get_stock_data(ticker):
     data = yf.download(ticker, start=end_date - datetime.timedelta(days=10), end=current_date)
     last_close_price = data['Close'][-1]
     last_close_date = data.index[-1]
+    shares_to_buy = purchase_value/last_close_price
     if testmode == True:
         print(ticker)
         print(f"Last close date: {last_close_date}\nLast close price: {round(last_close_price,2)}")
 
-
-
-
-
-
+        st.write(f"|**Ticker:** {ticker}, Close Price: {round(last_close_price,2)}, Date: ({last_close_date})|................**Shares to buy: {round(shares_to_buy)}**")
     
-
-
 
 
     
@@ -53,21 +45,27 @@ def get_stock_data(ticker):
 # GUI
 st.title("Stocks Data")
 
-tickers.tickers = st.text_input("Stocks Ticker List", value=tickers, height=200)
 
 
-# Zobrazení a aktualizace seznamu tickerů
+#####################################
+# Načtení hodnot tickerů
+default_tickers = ", ".join(tickers.tickers)
+
+# Textové pole ve Streamlit s předvyplněnou hodnotou
+user_input = st.text_input("Stocks Ticker List", value=default_tickers)
+
+purchase_value = st.number_input("Purchase USD value for each stock", value=2757)
 
 
-# Získání a zobrazení dat
-current_date = datetime.date.today()
-end_date = current_date - datetime.timedelta(days=1)
+# Zpracování odeslání formuláře
+if st.button('Apply'):
+    # Převedení uživatelského vstupu zpět na seznam
+    updated_tickers = user_input.split(", ")
+    # Uložení změn do souboru
+    save_tickers_to_file(updated_tickers)
+    st.success("Tickers updated successfully!")
+
+    for ticker in tickers.tickers:
+        stock_data = get_stock_data(ticker)
 
 
-
-
-# #
-# #####################################
-# for ticker in ticker_list:
-#     stock_data = get_stock_data(ticker)
-# #####################################
