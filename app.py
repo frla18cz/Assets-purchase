@@ -54,7 +54,7 @@ default_tickers = ", ".join(tickers.tickers)
 # Textové pole ve Streamlit s předvyplněnou hodnotou
 user_input = st.text_input("Stocks Ticker List", value=default_tickers)
 
-purchase_value = st.number_input("Purchase USD value for each stock", value=2757)
+purchase_value = st.number_input("Purchase USD value for each stock. |8 shares|", value=3446)
 
 
 # Zpracování odeslání formuláře

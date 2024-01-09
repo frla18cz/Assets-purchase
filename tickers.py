@@ -1,1 +1,1 @@
-tickers = ['AAPL', 'MSFT', 'GOOG', 'AMZN']
+tickers = ['TSLA', 'AAPL', 'ADBE', 'GOOGL', 'MSFT', 'NVDA', 'V', 'META', 'AMZN']
